@@ -2,6 +2,17 @@ package entity
 
 import "time"
 
+type CustomTime time.Time
+const layout = "2006-01-02T15:04:05.000Z"
+
+func (ct *CustomTime) UnmarshalJSON(b []byte) (err error) {
+	t, err := time.Parse(layout, string(b))
+	if err != nil {
+		return err
+	}
+	*ct = CustomTime(t)
+	return nil
+}
 
 type RouterRepository interface {
 	Create(route *Route) error
