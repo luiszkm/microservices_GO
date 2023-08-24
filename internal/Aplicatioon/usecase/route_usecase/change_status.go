@@ -7,17 +7,17 @@ import (
 )
 
 type ChangeStatusInput struct {
-	ID         string
-	StartedAt  entity.CustomTime
-	FinishedAt entity.CustomTime
-	Event      string
+	ID         string            `json:"id"`
+	StartedAt  entity.CustomTime `json:"started_at"`
+	FinishedAt entity.CustomTime `json:"finished_at"`
+	Event      string            `json:"event"`
 }
 
 type ChangeStatusOutput struct {
-	ID         string
-	Status     string
-	StartedAt  entity.CustomTime
-	FinishedAt entity.CustomTime
+	ID         string            `json:"id"`
+	Status     string            `json:"status"`
+	StartedAt  entity.CustomTime `json:"started_at"`
+	FinishedAt entity.CustomTime `json:"finished_at"`
 }
 
 type ChangeStatusUseCase struct {
