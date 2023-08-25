@@ -3,10 +3,12 @@ package entity
 import "time"
 
 type CustomTime time.Time
-const layout = "2006-01-02T15:04:05.000Z"
 
-func (ct *CustomTime) UnmarshalJSON(b []byte) (err error) {
-	t, err := time.Parse(layout, string(b))
+const layout = "2006-01-02T15:04"
+
+func (ct *CustomTime) UnmarshalJSON(b []byte) error {
+	s := string(b)
+	t, err := time.Parse(layout, s[1:len(s)-1]) // Remove quotes
 	if err != nil {
 		return err
 	}
@@ -39,12 +41,13 @@ func (r *Route) Finish(finishedAt time.Time) {
 	r.FinishedAt = finishedAt
 }
 
-
-func NewRoute (id, name string, distance float64) *Route {
+func NewRoute(id, name string, distance float64) *Route {
 	return &Route{
-		ID: id,
-		Name: name,
+		ID:       id,
+		Name:     name,
 		Distance: distance,
-		Status: "pending",
+		Status:   "pending",
 	}
 }
+
+

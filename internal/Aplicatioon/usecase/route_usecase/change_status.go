@@ -37,9 +37,9 @@ func (u *ChangeStatusUseCase) Execute(input ChangeStatusInput) (*ChangeStatusOut
 	}
 
 	switch input.Event {
-	case "start":
+	case "RouteStarted":
 		route.Start(time.Time(input.StartedAt))
-	case "finish":
+	case "RouteFinished":
 		route.Finish(time.Time(input.FinishedAt))
 	}
 
