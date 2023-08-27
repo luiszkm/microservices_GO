@@ -1,6 +1,20 @@
 version: '3'
 
 services:
+  goapp:
+    container_name: goapp
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+    command: sh -c "cd src && go run main.go"
+    depends_on:
+      mysql:
+        condition: service_healthy
+  
+
+
   mysql: 
     image: mysql:8
     container_name: mysql
@@ -10,29 +24,10 @@ services:
       MYSQL_DATABASE: routes
     ports:
       - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-ppass"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
    
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./.docker/prometheus:/etc/prometheus
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
  
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - "4000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - ./.docker/grafana_data:/var/lib/grafana
-
